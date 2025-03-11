@@ -58,7 +58,7 @@ const getProductsDetail = createAsyncThunk(
 
 const getAllProducts = createAsyncThunk(
   'products/getAllProducts',
-  async (params: object) => {
+  async (params: Params) => {
     console.log('params ==>', params);
 
     const selectedCategoryUrl =
@@ -66,7 +66,7 @@ const getAllProducts = createAsyncThunk(
         ? PRODUCTS_URLS.ALL_PRODUCTS
         : `${PRODUCTS_URLS.CATEGORY_PRODUCTS}/${params.category}`;
 
-    console.log('selectedCategoryUrl ==>', selectedCategoryUrl);
+    // console.log('selectedCategoryUrl ==>', selectedCategoryUrl);
     const response = await getRequest(params, selectedCategoryUrl);
     // console.log('ALL PRODUCTS ==>', response.data);
     return response.data;

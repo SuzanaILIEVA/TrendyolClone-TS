@@ -4,12 +4,17 @@ import {colors} from '../../theme/colors';
 import {height, width} from '../../utils/constants';
 import {AddBtnProps} from '../../models/ui/addBtnProps';
 
-const Button = ({btnsize, ...props}: AddBtnProps) => {
-  const {title} = props;
+const Button = ({btnsize, onPress, ...props}: AddBtnProps) => {
+  const {title, disabled} = props;
   return (
     <TouchableOpacity
+      disabled={disabled}
+      onPress={onPress}
       {...props}
-      style={{width: btnsize == 'small' ? width * 0.35 : '100%'}}>
+      style={{
+        width: btnsize == 'small' ? width * 0.35 : '100%',
+        // backgroundColor: disabled ? colors.GRAY : colors.PRIMARY,
+      }}>
       <Text style={[styles.button, {fontSize: btnsize == 'small' ? 15 : 19}]}>
         {title}
       </Text>

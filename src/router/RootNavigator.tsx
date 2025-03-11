@@ -1,15 +1,31 @@
 import {StyleSheet} from 'react-native';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import TabNavigator from './TabNavigator';
-import {PRODUCTSNAVIGATOR, TABNAVIGATOR} from '../utils/routes';
+import {AUTHNAVIGATOR, PRODUCTSNAVIGATOR, TABNAVIGATOR} from '../utils/routes';
 import ProductList from '../screens/products';
 import ProductDetail from '../screens/products/ProductDetail';
 import {colors} from '../theme/colors';
+import LoginScreen from '../screens/auth/LoginScreen';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useDispatch} from 'react-redux';
+import {AppDispatch} from '../store';
+import {checkUser} from '../store/slice/authSlice';
 
 const Stack = createNativeStackNavigator();
 
 const RootNavigator = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const getState = async () => {
+    const token = await AsyncStorage.getItem('token');
+    // console.log('TOKEN : ', token);
+    if (token) {
+      dispatch(checkUser(token));
+    }
+  };
+  useEffect(() => {
+    getState();
+  }, []);
   return (
     <Stack.Navigator
       screenOptions={{
@@ -33,6 +49,8 @@ const RootNavigator = () => {
         name={PRODUCTSNAVIGATOR.PRODUCTSDETAIL}
         component={ProductDetail}
       />
+
+      <Stack.Screen name={AUTHNAVIGATOR.LOGIN} component={LoginScreen} />
     </Stack.Navigator>
   );
 };

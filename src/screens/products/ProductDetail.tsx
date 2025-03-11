@@ -1,6 +1,6 @@
 import {Image, ScrollView, StyleSheet, Text, View} from 'react-native';
 import React, {useEffect} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
+import {shallowEqual, useDispatch, useSelector} from 'react-redux';
 import {AppDispatch, RootState} from '../../store';
 import {getProductsDetail} from '../../store/actions/productsActions';
 import {defaultScreenStyle} from '../../styles/defaultScreenStyle';
@@ -18,9 +18,14 @@ import {addToCart} from '../../store/slice/cartSlice';
 
 const ProductDetail = ({route}: any) => {
   const {productId, product} = route.params;
-  // console.log(route.params.productId);
+  console.log('productDetail id', route.params.productId);
 
-  const {singleProduct} = useSelector((state: RootState) => state.productsStr);
+  const singleProduct = useSelector(
+    (state: RootState) => state.productsStr.singleProduct,
+    shallowEqual,
+  );
+  console.log('singleProduct id: ' + singleProduct.id);
+
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {

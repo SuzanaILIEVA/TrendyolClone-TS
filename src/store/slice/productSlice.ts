@@ -23,7 +23,56 @@ const initialState: ProductState = {
 export const productSlice = createSlice({
   name: 'products',
   initialState,
-  reducers: {},
+  reducers: {
+    addFavoriteOther: (state, action) => {
+      const product = action.payload;
+
+      //bestseller
+      const existingProductBestSeller = state.bestSellerProducts.find(
+        item => item.id === product?.id,
+      );
+      if (existingProductBestSeller) {
+        existingProductBestSeller.isFavorite =
+          !existingProductBestSeller.isFavorite;
+      }
+      //popular
+      const existingProductPopular = state.popularProducts.find(
+        item => item.id === product?.id,
+      );
+      if (existingProductPopular) {
+        existingProductPopular.isFavorite = !existingProductPopular.isFavorite;
+      }
+      //jewelry
+      const existingProductJewelry = state.jewelry.find(
+        item => item.id === product?.id,
+      );
+      if (existingProductJewelry) {
+        existingProductJewelry.isFavorite = !existingProductJewelry.isFavorite;
+      }
+
+      //electronics
+      const existingProductElectronics = state.electronics.find(
+        item => item.id === product?.id,
+      );
+      if (existingProductElectronics) {
+        existingProductElectronics.isFavorite =
+          !existingProductElectronics.isFavorite;
+      }
+      //allProduct
+      const existingProductAll = state.products.find(
+        item => item.id === product?.id,
+      );
+      if (existingProductAll) {
+        existingProductAll.isFavorite = !existingProductAll.isFavorite;
+      }
+      //!  : DETAY SAYFASINDA FAVORITE TIKLAYINCA UNDEFINED DONUYO
+      //singleProduct
+
+      if (product?.id === state.singleProduct.id) {
+        state.singleProduct.isFavorite = !state.singleProduct.isFavorite;
+      }
+    },
+  },
   extraReducers: builder => {
     builder
       .addCase(getBestSellerProducts.pending, (state, action) => {
@@ -89,5 +138,7 @@ export const productSlice = createSlice({
       });
   },
 });
+
+export const {addFavoriteOther} = productSlice.actions;
 
 export default productSlice.reducer;

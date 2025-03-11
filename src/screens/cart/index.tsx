@@ -1,4 +1,11 @@
-import {FlatList, SafeAreaView, StyleSheet, Text, View} from 'react-native';
+import {
+  Alert,
+  FlatList,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import React from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppDispatch, RootState} from '../../store';
@@ -8,16 +15,38 @@ import Button from '../../components/ui/Button';
 import {colors} from '../../theme/colors';
 import {height} from '../../utils/constants';
 import EmptyCart from '../../components/cart/EmptyCart';
-import {TABNAVIGATOR} from '../../utils/routes';
+import {AUTHNAVIGATOR, TABNAVIGATOR} from '../../utils/routes';
 import {useNavigation} from '@react-navigation/native';
 
 type Props = {};
 
 const Cart = (props: Props) => {
   const {cart, totalPrice} = useSelector((state: RootState) => state.cartStr);
-  console.log('sepetteki urunler ==>', cart);
+  // console.log('sepetteki urunler ==>', cart);
+  const {isLogin} = useSelector((state: RootState) => state.authStr);
+
   const dispatch = useDispatch<AppDispatch>();
   const navigation = useNavigation<any>();
+
+  const checkLogin = () => {
+    if (!isLogin) {
+      Alert.alert('Login', 'Please login  to comfirm your cart', [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+          onPress: () => {
+            console.log('cancel pressed');
+          },
+        },
+        {
+          text: 'Login',
+          onPress: () => {
+            navigation.navigate(AUTHNAVIGATOR.LOGIN);
+          },
+        },
+      ]);
+    }
+  };
 
   return (
     <SafeAreaView style={defaultScreenStyle.container}>
@@ -38,7 +67,7 @@ const Cart = (props: Props) => {
           }
           data={cart}
           renderItem={({item}) => <CartItem cartProduct={item} />}
-          keyExtractor={item => item.id.toString()}
+          // keyExtractor={item => item.id.toString()}
         />
       </View>
       {cart.length == 0 ? null : (
@@ -50,7 +79,7 @@ const Cart = (props: Props) => {
             <Text style={styles.info}>Free Shipping </Text>
           </View>
           <View style={styles.right}>
-            <Button btnsize="large" title={'CHECKOUT'} />
+            <Button btnsize="large" title={'CHECKOUT'} onPress={checkLogin} />
           </View>
         </View>
       )}

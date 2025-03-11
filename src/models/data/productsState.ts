@@ -28,6 +28,7 @@ interface ProductState {
 
 interface Params {
   id: number;
+  category?: string;
 }
 
 export type {ProductState, Product, Params, Rating};
