@@ -35,7 +35,7 @@ const ProductDetail = ({route}: any) => {
     <View style={defaultScreenStyle.container}>
       <View style={styles.container}>
         <ScrollView showsVerticalScrollIndicator={false}>
-          <FavoritesButton product={product} />
+          <FavoritesButton product={singleProduct} />
           <Image
             source={
               singleProduct?.image
